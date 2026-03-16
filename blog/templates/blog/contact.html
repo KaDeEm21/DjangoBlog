@@ -1,0 +1,61 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Kontakt{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-0">
+    <div class="max-w-4xl mx-auto space-y-6">
+        <section class="bg-gradient-to-r from-slate-900 to-sky-700 rounded-2xl shadow-xl p-8 text-white">
+            <p class="text-sm uppercase tracking-[0.3em] text-sky-200 mb-3">Kontakt</p>
+            <h1 class="text-4xl font-bold mb-4">Porozmawiajmy o projekcie</h1>
+            <p class="text-sky-100 text-lg max-w-2xl">
+                Ta sekcja pełni rolę strony kontaktowej do prezentacji aplikacji. Zawiera podstawowe dane, kanały kontaktu i krótki opis współpracy.
+            </p>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <section class="bg-white rounded-2xl shadow-xl p-6">
+                <p class="text-sm uppercase tracking-wide text-gray-500 mb-2">Email</p>
+                <a href="mailto:kontakt@mojblog-demo.pl" class="text-lg font-semibold text-blue-600 hover:text-blue-800">
+                    kontakt@mojblog-demo.pl
+                </a>
+                <p class="text-gray-600 mt-3">Najlepszy kanał do pytań o projekt, demo i rozwój funkcji.</p>
+            </section>
+
+            <section class="bg-white rounded-2xl shadow-xl p-6">
+                <p class="text-sm uppercase tracking-wide text-gray-500 mb-2">Telefon</p>
+                <p class="text-lg font-semibold text-gray-800">+48 555 123 987</p>
+                <p class="text-gray-600 mt-3">Dni robocze, 9:00-17:00. Numer demonstracyjny do prezentacji interfejsu.</p>
+            </section>
+
+            <section class="bg-white rounded-2xl shadow-xl p-6">
+                <p class="text-sm uppercase tracking-wide text-gray-500 mb-2">Lokalizacja</p>
+                <p class="text-lg font-semibold text-gray-800">Warszawa, Polska</p>
+                <p class="text-gray-600 mt-3">Projekt rozwijany lokalnie jako aplikacja pokazowa w Django.</p>
+            </section>
+        </div>
+
+        <section class="bg-white rounded-2xl shadow-xl p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">W czym mogę pomóc</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-600">
+                <div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Demo aplikacji</h3>
+                    <p>Prezentacja funkcji bloga, logowania, komentarzy, polubień i panelu autora.</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Rozszerzenia projektu</h3>
+                    <p>Możliwość dodania edycji profilu, panelu moderacji, liczników odsłon i własnego frontendu.</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Wsparcie techniczne</h3>
+                    <p>Pomoc przy uruchomieniu lokalnym, seedowaniu danych i przygotowaniu projektu do oddania.</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Kolejne iteracje</h3>
+                    <p>Można dalej rozbudować aplikację o API, upload plików, role użytkowników i lepszy panel admina.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ tag.name }}{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-0">
+    <!-- Tag Header -->
+    <div class="bg-white rounded-2xl shadow-xl p-8 mb-6">
+        <div class="flex items-center mb-4">
+            <svg class="w-8 h-8 text-purple-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+            </svg>
+            <h1 class="text-3xl font-bold text-gray-800">#{{ tag.name }}</h1>
+        </div>
+        <p class="text-gray-600">Posty oznaczone tagiem {{ tag.name }}</p>
+    </div>
+
+    <!-- Posts Grid -->
+    {% if page_obj.object_list %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for post in page_obj.object_list %}
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+            {% if post.image_url %}
+            <img src="{{ post.image_url }}" alt="{{ post.title }}" class="h-48 w-full object-cover">
+            {% else %}
+            <div class="h-48 bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                <span class="text-white text-sm font-semibold uppercase tracking-wide">Brak miniatury</span>
+            </div>
+            {% endif %}
+            <div class="p-6">
+                <div class="flex items-center text-sm text-gray-500 mb-3">
+                    <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-medium mr-2">
+                        {{ post.category.name }}
+                    </span>
+                    <span>{{ post.created_at|date:"d F Y" }}</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3 line-clamp-2">
+                    <a href="{% url 'post_detail' post.slug %}" class="hover:text-purple-600 transition">
+                        {{ post.title }}
+                    </a>
+                </h3>
+                <p class="text-gray-600 text-sm mb-4 line-clamp-3">{{ post.content|truncatewords:40 }}</p>
+                {% if post.author %}
+                <p class="text-sm text-gray-500 mb-4">Autor: <a href="{% url 'author_detail' post.author.username %}" class="text-purple-600 hover:text-purple-800">{{ post.author.username }}</a></p>
+                {% endif %}
+                {% if post.tags.all %}
+                <div class="flex flex-wrap gap-2 mb-4">
+                    {% for t in post.tags.all|slice:":3" %}
+                    <a href="{% url 'tag_detail' t.slug %}" class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full hover:bg-purple-200 transition">
+                        #{{ t.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <a href="{% url 'post_detail' post.slug %}"
+                   class="inline-flex items-center text-purple-600 hover:text-purple-800 font-medium transition">
+                    Czytaj więcej
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="mt-8 flex justify-center">
+        <nav class="flex items-center space-x-2">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}"
+               class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 transition">
+                &laquo; Poprzednia
+            </a>
+            {% endif %}
+
+            <span class="px-4 py-2 bg-purple-600 text-white rounded-lg">
+                Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}"
+               class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 transition">
+                Następna &raquo;
+            </a>
+            {% endif %}
+        </nav>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="bg-white rounded-xl shadow-lg p-12 text-center">
+        <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+        </svg>
+        <p class="text-gray-600 text-lg">Brak postów z tym tagiem.</p>
+    </div>
+    {% endif %}
+
+    <!-- Back Button -->
+    <div class="mt-6">
+        <a href="{% url 'post_list' %}"
+           class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Powrót do listy postów
+        </a>
+    </div>
+</div>
+{% endblock %}

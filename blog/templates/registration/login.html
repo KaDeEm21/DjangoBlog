@@ -1,0 +1,55 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Logowanie{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-0">
+    <div class="max-w-md mx-auto">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Logowanie</h1>
+
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Username -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nazwa użytkownika *</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.username.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Hasło *</label>
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.password.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Form Errors -->
+                {% if form.errors %}
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <p class="text-red-600 text-sm">{{ form.non_field_errors }}</p>
+                </div>
+                {% endif %}
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-medium">
+                    Zaloguj się
+                </button>
+            </form>
+
+            <!-- Register Link -->
+            <div class="mt-6 text-center">
+                <p class="text-gray-600">
+                    Nie masz konta?
+                    <a href="{% url 'register' %}" class="text-blue-600 hover:text-blue-800 font-medium">Zarejestruj się</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

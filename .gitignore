@@ -1,0 +1,16 @@
+.env
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.DS_Store
+.claude/
+GETTING_STARTED.md
+IMPLEMENTATION_PLAN.md
+MEMORY.md
+PROJECT_CONTEXT.md
+__pycache__/
+*.py[cod]
+*.sqlite3
+media/
+staticfiles/

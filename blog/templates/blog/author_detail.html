@@ -1,0 +1,122 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Autor: {{ author_obj.username }}{% endblock %}
+
+{% block content %}
+<div class="px-4 sm:px-0">
+    <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+        <div class="flex flex-col md:flex-row md:items-center gap-6">
+            {% if profile_obj.avatar %}
+            <img src="{{ profile_obj.avatar }}" alt="{{ author_obj.username }}" class="w-24 h-24 rounded-full object-cover">
+            {% else %}
+            <div class="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white text-3xl font-bold">
+                {{ author_obj.username|slice:":1"|upper }}
+            </div>
+            {% endif %}
+            <div>
+                <p class="text-sm uppercase tracking-wide text-gray-500 mb-1">Autor</p>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ author_obj.username }}</h1>
+                <p class="text-gray-600 mb-3">{{ profile_obj.bio|default:"Autor nie dodał jeszcze opisu." }}</p>
+                <div class="flex flex-wrap gap-4 text-sm text-gray-500">
+                    <span>{{ page_obj.paginator.count }} postów</span>
+                    <span>{{ likes_received_count }} polubień</span>
+                    <span>{{ comments_received_count }} komentarzy</span>
+                    <span>{{ featured_posts_count }} polecane wpisy</span>
+                    {% if profile_obj.location %}<span>{{ profile_obj.location }}</span>{% endif %}
+                    {% if profile_obj.website %}<a href="{{ profile_obj.website }}" class="text-blue-600 hover:text-blue-800">{{ profile_obj.website }}</a>{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <section class="bg-white rounded-2xl shadow-xl p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Social proof</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="rounded-2xl bg-blue-50 p-4">
+                    <p class="text-sm text-blue-700">Posty</p>
+                    <p class="text-3xl font-bold text-blue-900 mt-2">{{ page_obj.paginator.count }}</p>
+                </div>
+                <div class="rounded-2xl bg-amber-50 p-4">
+                    <p class="text-sm text-amber-700">Polubienia</p>
+                    <p class="text-3xl font-bold text-amber-900 mt-2">{{ likes_received_count }}</p>
+                </div>
+                <div class="rounded-2xl bg-emerald-50 p-4">
+                    <p class="text-sm text-emerald-700">Komentarze</p>
+                    <p class="text-3xl font-bold text-emerald-900 mt-2">{{ comments_received_count }}</p>
+                </div>
+                <div class="rounded-2xl bg-fuchsia-50 p-4">
+                    <p class="text-sm text-fuchsia-700">Polecane</p>
+                    <p class="text-3xl font-bold text-fuchsia-900 mt-2">{{ featured_posts_count }}</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-xl p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Najpopularniejszy wpis</h2>
+            {% if top_post %}
+            <a href="{% url 'post_detail' top_post.slug %}" class="text-xl font-semibold text-gray-800 hover:text-blue-600">{{ top_post.title }}</a>
+            <p class="text-gray-600 mt-3">{{ top_post.content|truncatewords:28 }}</p>
+            <div class="mt-4 flex flex-wrap gap-4 text-sm text-gray-500">
+                <span>{{ top_post.like_count }} polubień</span>
+                <span>{{ top_post.approved_comment_count }} komentarzy</span>
+                <span>{{ top_post.created_at|date:"d F Y" }}</span>
+            </div>
+            {% else %}
+            <p class="text-gray-600">Autor nie ma jeszcze wpisów do pokazania.</p>
+            {% endif %}
+        </section>
+    </div>
+
+    {% if recent_posts %}
+    <section class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Ostatnia aktywność autora</h2>
+        <div class="space-y-4">
+            {% for recent_post in recent_posts %}
+            <a href="{% url 'post_detail' recent_post.slug %}" class="block border border-gray-200 rounded-xl p-4 hover:bg-gray-50 transition">
+                <div class="flex items-center justify-between gap-4 flex-wrap">
+                    <div>
+                        <p class="font-semibold text-gray-800">{{ recent_post.title }}</p>
+                        <p class="text-sm text-gray-500 mt-1">{{ recent_post.created_at|date:"d F Y" }}</p>
+                    </div>
+                    <div class="text-sm text-gray-500 flex gap-3">
+                        <span>{{ recent_post.like_count }} polubień</span>
+                        <span>{{ recent_post.approved_comment_count }} komentarzy</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if page_obj.object_list %}
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {% for post in page_obj.object_list %}
+        <article class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
+            {% if post.image_url %}
+            <img src="{{ post.image_url }}" alt="{{ post.title }}" class="h-48 w-full object-cover">
+            {% else %}
+            <div class="h-48 bg-gradient-to-r from-blue-500 to-sky-500"></div>
+            {% endif %}
+            <div class="p-6">
+                <p class="text-sm text-gray-500 mb-2">{{ post.created_at|date:"d F Y" }}</p>
+                <h2 class="text-xl font-bold text-gray-800 mb-3">
+                    <a href="{% url 'post_detail' post.slug %}" class="hover:text-blue-600">{{ post.title }}</a>
+                </h2>
+                <p class="text-gray-600 text-sm mb-4">{{ post.content|truncatewords:30 }}</p>
+                <div class="flex justify-between text-sm text-gray-500">
+                    <span>{{ post.like_count }} polubień</span>
+                    <span>{{ post.approved_comment_count }} komentarzy</span>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-xl shadow-lg p-12 text-center">
+        <p class="text-gray-600 text-lg">Ten autor nie ma jeszcze opublikowanych postów.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
