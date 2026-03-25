@@ -21,6 +21,7 @@ Polskojęzyczna aplikacja blogowa zbudowana w Django. Projekt obejmuje publiczny
 - wyszukiwarka i filtrowanie po kategorii, tagu i popularności
 - publiczne strony autorów z podstawowymi statystykami
 - seed danych demo z gotowymi użytkownikami, wpisami, komentarzami i polubieniami
+- gotowa baza `db.sqlite3` z załadowanymi danymi demonstracyjnymi do szybkiego pokazu projektu
 
 ## Architektura projektu
 
@@ -66,13 +67,15 @@ cp .env.example .env
 python3 manage.py migrate
 ```
 
-5. Załaduj dane demo:
+5. Repo zawiera już gotową bazę `db.sqlite3` z danymi demo, więc po migracjach możesz od razu uruchomić aplikację.
+
+6. Jeśli chcesz odtworzyć dane demo od zera:
 
 ```bash
 python3 manage.py seed_data
 ```
 
-6. Uruchom serwer developerski:
+7. Uruchom serwer developerski:
 
 ```bash
 python3 manage.py runserver
@@ -88,6 +91,7 @@ Zmienne środowiskowe używane przez projekt:
 
 ## Dane logowania do użytkowników demo
 
+- `admin` / lokalne hasło zapisane wyłącznie w dołączonej bazie `db.sqlite3`
 - `demo_author` / `DemoAuthor123`
 - `ola_dev` / `OlaDev123`
 - `marek_travel` / `MarekTravel123`
@@ -160,4 +164,3 @@ django_blog/
 ├── urls.py
 └── README.md
 ```
-
