@@ -61,7 +61,7 @@ class BlogViewTests(TestCase):
         self.assertEqual(created_post.author, self.user)
         self.assertTrue(created_post.is_published)
 
-    def test_comment_create_adds_comment(self):
+    def test_comment_create_adds_hidden_comment_pending_approval(self):
         response = self.client.post(
             reverse('comment_create', args=[self.post.slug]),
             {
@@ -72,7 +72,22 @@ class BlogViewTests(TestCase):
         )
 
         self.assertRedirects(response, reverse('post_detail', args=[self.post.slug]))
-        self.assertTrue(Comment.objects.filter(post=self.post, email='jan@example.com').exists())
+        comment = Comment.objects.get(post=self.post, email='jan@example.com')
+        self.assertFalse(comment.is_approved)
+
+    def test_pending_comment_is_not_visible_on_post_detail(self):
+        Comment.objects.create(
+            post=self.post,
+            name='Jan',
+            email='jan@example.com',
+            content='Komentarz oczekujący na moderację',
+            is_approved=False,
+        )
+
+        response = self.client.get(reverse('post_detail', args=[self.post.slug]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'Komentarz oczekujący na moderację')
 
     def test_duplicate_email_comment_is_rejected(self):
         Comment.objects.create(

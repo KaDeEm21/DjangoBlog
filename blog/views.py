@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -401,8 +402,9 @@ def comment_create(request, slug):
     if form.is_valid():
         comment = form.save(commit=False)
         comment.post = post
-        comment.is_approved = True
+        comment.is_approved = False
         comment.save()
+        messages.success(request, 'Komentarz został zapisany i czeka na akceptację autora.')
         return redirect('post_detail', slug=slug)
 
     return render(request, 'blog/post_detail.html', build_post_detail_context(post, request, form))

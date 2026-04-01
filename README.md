@@ -16,7 +16,7 @@ Polskojęzyczna aplikacja blogowa zbudowana w Django. Projekt obejmuje publiczny
 - rejestracja, logowanie i wylogowanie użytkownika
 - automatyczne tworzenie profilu użytkownika przez sygnał `post_save`
 - tworzenie, edycja i usuwanie własnych wpisów
-- komentarze z moderacją po stronie autora wpisu
+- komentarze zapisywane jako oczekujące i moderowane po stronie autora wpisu
 - polubienia oparte o adres IP
 - wyszukiwarka i filtrowanie po kategorii, tagu i popularności
 - publiczne strony autorów z podstawowymi statystykami
@@ -46,42 +46,65 @@ Relacje domenowe:
 1. Przejdź do katalogu projektu:
 
 ```bash
-cd /home/karol/django_blog
+cd django_blog
 ```
 
-2. Zainstaluj zależności w aktywnym środowisku:
+2. Utwórz wirtualne środowisko:
 
 ```bash
-pip install -r requirements.txt
+python -m venv .venv
 ```
 
-3. Skopiuj przykładową konfigurację środowiskową:
+3. Aktywuj środowisko:
+
+```bash
+.venv\Scripts\activate
+```
+
+4. Zaktualizuj pip oraz zainstaluj zależności:
+
+```bash
+python -m pip install --upgrade pip
+python -m pip install -r .\requirements.txt
+```
+
+5. Skopiuj przykładową konfigurację środowiskową:
 
 ```bash
 cp .env.example .env
 ```
 
-4. Uruchom migracje:
+W PowerShell możesz użyć:
 
-```bash
-python3 manage.py migrate
+```powershell
+Copy-Item .env.example .env
 ```
 
-5. Repo zawiera już gotową bazę `db.sqlite3` z danymi demo, więc po migracjach możesz od razu uruchomić aplikację.
-
-6. Jeśli chcesz odtworzyć dane demo od zera:
+6. Uruchom migracje:
 
 ```bash
-python3 manage.py seed_data
+python manage.py migrate
 ```
 
-7. Uruchom serwer developerski:
+7. Repo zawiera już gotową bazę `db.sqlite3` z danymi demo, więc po migracjach możesz od razu uruchomić aplikację.
+
+8. Jeśli chcesz odtworzyć dane demo od zera:
 
 ```bash
-python3 manage.py runserver
+python manage.py seed_data
 ```
 
-Aplikacja będzie dostępna pod `http://127.0.0.1:8000/`.
+9. Uruchom serwer developerski:
+
+```bash
+python manage.py runserver
+```
+
+10. Otwórz przeglądarkę i wejdź na:
+
+```text
+http://127.0.0.1:8000/
+```
 
 Zmienne środowiskowe używane przez projekt:
 
@@ -96,16 +119,6 @@ Zmienne środowiskowe używane przez projekt:
 - `ola_dev` / `OlaDev123`
 - `marek_travel` / `MarekTravel123`
 - `ania_culture` / `AniaCulture123`
-
-## Testy
-
-Podstawowy zestaw testów uruchomisz poleceniem:
-
-```bash
-python3 manage.py test
-```
-
-Testy obejmują najważniejsze przepływy modeli i widoków, w tym profil użytkownika, tworzenie wpisów, komentarze, polubienia oraz uprawnienia autora.
 
 ## O mnie
 
